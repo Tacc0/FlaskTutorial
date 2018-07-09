@@ -1,0 +1,2 @@
+web: gunicorn app:microblog
+release: python manage.py db upgrade
