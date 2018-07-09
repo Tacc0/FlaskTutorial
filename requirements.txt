@@ -45,4 +45,4 @@ Werkzeug==0.12.2
 WTForms==2.1
 xattr==0.6.4
 zope.interface==4.1.1
-psycopg2==2.4.4
+psycopg2==2.7.5
