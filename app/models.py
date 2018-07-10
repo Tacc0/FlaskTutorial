@@ -19,6 +19,7 @@ class User(UserMixin , db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    sped = db.relationship('Spedizione', backref='owner', lazy='dynamic')
     followed = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
@@ -100,6 +101,16 @@ class SearchableMixin(object):
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
+class Spedizione(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    via= db.Column(db.String(100))
+    nCivico= db.Column(db.String(5))
+    citta= db.Column(db.String(100))
+    stato= db.Column(db.String(100))
+    zip= db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
 
 class Post(db.Model):
     __searchable__ = ['body']
@@ -110,8 +121,14 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     language= db.Column(db.String(5))
 
+
     def __repr__(self):
         return '<Post {}>'.format(self.body, self.body2)
+
+
+
+    def __repr__(self):
+        return '<Indirizzo { }>'.format(self.via)
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

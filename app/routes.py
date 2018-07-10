@@ -11,7 +11,7 @@ from app import db
 from app.forms import RegistrationForm
 from app.forms import EditProfileForm
 from app.forms import PostForm
-from app.models import Post
+from app.models import Post, Spedizione
 from guess_language import guess_language
 from flask import g
 
@@ -46,6 +46,9 @@ def register():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
+        db.session.commit()
+        sped= Spedizione(via=form.via.data)
+        db.session.add(sped)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
